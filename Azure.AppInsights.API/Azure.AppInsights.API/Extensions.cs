@@ -1,0 +1,27 @@
+﻿using Azure.AppInsights.API.Configuration;
+using Azure.AppInsights.API.Internal.Http;
+using Microsoft.Extensions.DependencyInjection;
+using System;
+
+namespace Azure.AppInsights.API
+{
+    public static class Extensions
+    {
+        /// <summary>
+        /// Register the services to read telemetry data from the AppInsights API
+        /// </summary>
+        /// <param name="services">Current services</param>
+        /// <param name="appInsightsConfigurationOptions">Configuration to use to conmmunicate with the AppInsights API</param>
+        /// <returns>Services collection containing the AppInsights services</returns>
+        public static IServiceCollection AddAppInsigthsAPI(this IServiceCollection services, Action<AppInsightsConfiguration> appInsightsConfigurationOptions)
+        {
+            services
+                .AddHttpClient()
+                .AddSingleton<IAppInsightsHttpClient, AppInsightsApiHttpClient>()
+                .AddOptions<AppInsightsConfiguration>()
+                .Configure(appInsightsConfigurationOptions);
+
+            return services;
+        }
+    }
+}

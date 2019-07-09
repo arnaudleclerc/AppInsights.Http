@@ -1,22 +1,28 @@
 ﻿using AppInsights.Http.Configuration;
+using AppInsights.Http.Exceptions;
 using AppInsights.Http.Internal.Metrics;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace AppInsights.Http.Internal.Http
 {
-    internal class AppInsightsApiHttpClient : IAppInsightsHttpClient
+    internal class AppInsightsHttpClient : IAppInsightsHttpClient
     {
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly AppInsightsConfiguration _appInsightsConfiguration;
+        private readonly ILogger _logger;
 
-        public AppInsightsApiHttpClient(IHttpClientFactory httpClientFactory,
-            IOptions<AppInsightsConfiguration> options)
+        public AppInsightsHttpClient(IHttpClientFactory httpClientFactory,
+            IOptions<AppInsightsConfiguration> options,
+            ILogger logger)
         {
             _httpClientFactory = httpClientFactory;
             _appInsightsConfiguration = options.Value;
+            _logger = logger;
         }
 
         public async Task<IMetric> GetMetricAsync(AppInsights.Http.Metrics metrics)
@@ -29,7 +35,10 @@ namespace AppInsights.Http.Internal.Http
                     var result = await client.SendAsync(request);
                     if(!result.IsSuccessStatusCode)
                     {
-                        return null;
+                        var error = JsonConvert.DeserializeObject<JObject>(await result.Content.ReadAsStringAsync());
+                        var appInsightsException = new AppInsightsException(error["error"]["message"].ToString(), error["error"]["code"].ToString());
+                        _logger.LogError($"AppInsightsException - {error["error"]["code"].ToString()} : {error["error"]["message"].ToString()}");
+                        throw appInsightsException;
                     }
                     var content = await result.Content.ReadAsStringAsync();
                     var metric = JsonConvert.DeserializeObject<AppInsightsMetric>(content);

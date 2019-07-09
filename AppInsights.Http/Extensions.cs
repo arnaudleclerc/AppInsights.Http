@@ -13,11 +13,11 @@ namespace AppInsights.Http
         /// <param name="services">Current services</param>
         /// <param name="appInsightsConfigurationOptions">Configuration to use to conmmunicate with the AppInsights API</param>
         /// <returns>Services collection containing the AppInsights services</returns>
-        public static IServiceCollection AddAppInsigthsAPI(this IServiceCollection services, Action<AppInsightsConfiguration> appInsightsConfigurationOptions)
+        public static IServiceCollection AddAppInsightsHttpClient(this IServiceCollection services, Action<AppInsightsConfiguration> appInsightsConfigurationOptions)
         {
             services
                 .AddHttpClient()
-                .AddSingleton<IAppInsightsHttpClient, AppInsightsApiHttpClient>()
+                .AddSingleton<IAppInsightsHttpClient, AppInsightsHttpClient>()
                 .AddOptions<AppInsightsConfiguration>()
                 .Configure(appInsightsConfigurationOptions);
 

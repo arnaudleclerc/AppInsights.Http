@@ -48,7 +48,7 @@
 
         private readonly string _metric;
 
-        private Metrics(string metric) => _metric = metric;
+        public Metrics(string metric) => _metric = metric;
 
         public override string ToString()
         {

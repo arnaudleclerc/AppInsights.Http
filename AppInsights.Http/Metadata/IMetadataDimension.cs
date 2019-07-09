@@ -1,4 +1,4 @@
-﻿namespace AppInsights.Http
+﻿namespace AppInsights.Http.Metadata
 {
     public interface IMetadataDimension
     {

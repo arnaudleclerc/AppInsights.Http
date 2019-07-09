@@ -1,6 +1,7 @@
 ﻿using AppInsights.Http.Configuration;
 using AppInsights.Http.Exceptions;
 using AppInsights.Http.Internal.Http;
+using AppInsights.Http.Metrics;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
@@ -50,7 +51,7 @@ namespace AppInsights.Http.Tests.Internal.Http
             };
             options.Setup(o => o.Value).Returns(appInsightsConfiguration);
 
-            var metrics = Metrics.AvailabilityResultsAvailabilityPercentage;
+            var metrics = MetricsDefinition.AvailabilityResultsAvailabilityPercentage;
 
             var httpClientHandler = new HttpClientMockHandler(() => new HttpResponseMessage(HttpStatusCode.InternalServerError)
             {
@@ -85,7 +86,7 @@ namespace AppInsights.Http.Tests.Internal.Http
             };
             options.Setup(o => o.Value).Returns(appInsightsConfiguration);
 
-            var metrics = Metrics.RequestsCount;
+            var metrics = MetricsDefinition.RequestsCount;
 
             var httpClientHandler = new HttpClientMockHandler(() => new HttpResponseMessage(HttpStatusCode.OK)
             {

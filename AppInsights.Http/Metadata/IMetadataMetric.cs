@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace AppInsights.Http
+namespace AppInsights.Http.Metadata
 {
     public interface IMetadataMetric
     {

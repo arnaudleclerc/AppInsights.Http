@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using AppInsights.Http.Metrics;
+using Newtonsoft.Json;
 
 namespace AppInsights.Http.Internal.Metrics
 {

@@ -1,4 +1,5 @@
 using AppInsights.Http;
+using AppInsights.Http.Metrics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -24,7 +25,7 @@ namespace AppInsights.Samples.Function
         {
             try
             {
-                var result = await _appInsightsHttpClient.GetMetricAsync(new Metrics($"{metric}/{aggregation}"));
+                var result = await _appInsightsHttpClient.GetMetricAsync(new MetricsDefinition($"{metric}/{aggregation}"));
                 return new OkObjectResult(result);
             }
             catch(Exception ex)

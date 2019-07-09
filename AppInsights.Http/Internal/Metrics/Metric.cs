@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using AppInsights.Http.Metrics;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 
@@ -8,7 +9,7 @@ namespace AppInsights.Http.Internal.Metrics
     {
         private readonly AppInsightsMetric _appInsightsMetric;
 
-        public Metric(AppInsightsMetric appInsightsMetric, string appInsightsMetricJson, AppInsights.Http.Metrics metrics)
+        public Metric(AppInsightsMetric appInsightsMetric, string appInsightsMetricJson, MetricsDefinition metrics)
         {
             _appInsightsMetric = appInsightsMetric;
             var aggregation = JsonConvert.DeserializeObject<JObject>(appInsightsMetricJson)["value"][metrics.ToString()];

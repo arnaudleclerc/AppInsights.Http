@@ -1,4 +1,6 @@
-﻿namespace AppInsights.Http.Internal.Metadata
+﻿using AppInsights.Http.Metadata;
+
+namespace AppInsights.Http.Internal.Metadata
 {
     internal class MetadataDimension : IMetadataDimension
     {

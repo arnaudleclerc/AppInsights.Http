@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using AppInsights.Http.Metadata;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 
 namespace AppInsights.Http.Internal.Metadata

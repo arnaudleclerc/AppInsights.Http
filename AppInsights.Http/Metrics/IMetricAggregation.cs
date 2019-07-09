@@ -1,4 +1,4 @@
-﻿namespace AppInsights.Http
+﻿namespace AppInsights.Http.Metrics
 {
     public interface IMetricAggregation
     {

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using AppInsights.Http.Metadata;
+using System.Collections.Generic;
 
 namespace AppInsights.Http.Internal.Metadata
 {

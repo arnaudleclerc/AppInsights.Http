@@ -2,6 +2,8 @@
 using AppInsights.Http.Exceptions;
 using AppInsights.Http.Internal.Metadata;
 using AppInsights.Http.Internal.Metrics;
+using AppInsights.Http.Metadata;
+using AppInsights.Http.Metrics;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
@@ -28,7 +30,7 @@ namespace AppInsights.Http.Internal.Http
             _logger = logger;
         }
 
-        public async Task<IMetric> GetMetricAsync(AppInsights.Http.Metrics metrics)
+        public async Task<IMetric> GetMetricAsync(MetricsDefinition metrics)
         {
             using (var client = _httpClientFactory.CreateClient(_appInsightsConfiguration.APIKey))
             {

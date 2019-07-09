@@ -1,4 +1,6 @@
-﻿using AppInsights.Http.Configuration;
+﻿using AppInsights.Http.Analytics;
+using AppInsights.Http.Configuration;
+using AppInsights.Http.Internal.Analytics;
 using AppInsights.Http.Internal.Http;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -18,6 +20,7 @@ namespace AppInsights.Http
             services
                 .AddHttpClient()
                 .AddSingleton<IAppInsightsHttpClient, AppInsightsHttpClient>()
+                .AddSingleton<IAnalyticsQueryBuilderFactory, AnalyticsQueryBuilderFactory>()
                 .AddOptions<AppInsightsConfiguration>()
                 .Configure(appInsightsConfigurationOptions);
 

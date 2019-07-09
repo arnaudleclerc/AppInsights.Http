@@ -2,6 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>Arnaud Leclerc</Authors>
+    <Company />
+    <PackageProjectUrl>https://github.com/arnaudleclerc/azure-appinsights-api-wrapper</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/arnaudleclerc/azure-appinsights-api-wrapper</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
   </PropertyGroup>
 
   <ItemGroup>

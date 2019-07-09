@@ -1,11 +1,11 @@
-﻿using Azure.AppInsights.API.Configuration;
-using Azure.AppInsights.API.Internal.Metrics;
+﻿using AppInsights.Http.Configuration;
+using AppInsights.Http.Internal.Metrics;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace Azure.AppInsights.API.Internal.Http
+namespace AppInsights.Http.Internal.Http
 {
     internal class AppInsightsApiHttpClient : IAppInsightsHttpClient
     {
@@ -19,7 +19,7 @@ namespace Azure.AppInsights.API.Internal.Http
             _appInsightsConfiguration = options.Value;
         }
 
-        public async Task<IMetric> GetMetricAsync(Azure.AppInsights.API.Metrics metrics)
+        public async Task<IMetric> GetMetricAsync(AppInsights.Http.Metrics metrics)
         {
             using(var client = _httpClientFactory.CreateClient(_appInsightsConfiguration.APIKey))
             {

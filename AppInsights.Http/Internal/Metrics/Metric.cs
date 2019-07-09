@@ -2,13 +2,13 @@
 using Newtonsoft.Json.Linq;
 using System;
 
-namespace Azure.AppInsights.API.Internal.Metrics
+namespace AppInsights.Http.Internal.Metrics
 {
     internal class Metric : IMetric
     {
         private readonly AppInsightsMetric _appInsightsMetric;
 
-        public Metric(AppInsightsMetric appInsightsMetric, string appInsightsMetricJson, Azure.AppInsights.API.Metrics metrics)
+        public Metric(AppInsightsMetric appInsightsMetric, string appInsightsMetricJson, AppInsights.Http.Metrics metrics)
         {
             _appInsightsMetric = appInsightsMetric;
             var aggregation = JsonConvert.DeserializeObject<JObject>(appInsightsMetricJson)["value"][metrics.ToString()];

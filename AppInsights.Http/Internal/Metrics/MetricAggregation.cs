@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Azure.AppInsights.API.Internal.Metrics
+namespace AppInsights.Http.Internal.Metrics
 {
     internal class MetricAggregation : IMetricAggregation
     {

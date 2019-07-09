@@ -1,4 +1,4 @@
-﻿namespace Azure.AppInsights.API
+﻿namespace AppInsights.Http
 {
     /// <summary>
     /// Metrics which can be used

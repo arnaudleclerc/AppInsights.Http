@@ -1,9 +1,9 @@
-﻿using Azure.AppInsights.API.Configuration;
-using Azure.AppInsights.API.Internal.Http;
+﻿using AppInsights.Http.Configuration;
+using AppInsights.Http.Internal.Http;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
-namespace Azure.AppInsights.API
+namespace AppInsights.Http
 {
     public static class Extensions
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Azure.AppInsights.API.Configuration
+namespace AppInsights.Http.Configuration
 {
     public class AppInsightsConfiguration
     {

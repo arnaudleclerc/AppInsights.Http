@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 
-namespace Azure.AppInsights.API.Internal.Metrics
+namespace AppInsights.Http.Internal.Metrics
 {
     internal class AppInsightsMetric
     {

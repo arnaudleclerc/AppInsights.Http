@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Azure.AppInsights.API
+namespace AppInsights.Http
 {
     public interface IMetric
     {

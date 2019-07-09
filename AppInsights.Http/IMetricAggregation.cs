@@ -1,4 +1,4 @@
-﻿namespace Azure.AppInsights.API
+﻿namespace AppInsights.Http
 {
     public interface IMetricAggregation
     {

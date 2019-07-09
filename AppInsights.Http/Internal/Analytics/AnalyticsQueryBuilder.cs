@@ -1,12 +1,13 @@
 ﻿using AppInsights.Http.Analytics;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace AppInsights.Http.Internal.Analytics
 {
-    internal class AnalyticsQueryBuilder : IAnalyticsQueryBuilder
+    internal class AnalyticsQueryBuilder : IAnalyticsQueryFilterBuilder
     {
-        private IList<string> _filters;
+        private readonly List<string> _filters = new List<string>();
 
         public AnalyticsSchema Schema { get; }
 
@@ -14,11 +15,13 @@ namespace AppInsights.Http.Internal.Analytics
 
         public IAnalyticsQueryFilterBuilder WithFilter(string filterName, AnalyticFilterOperator filterOperator, string value)
         {
-            if (_filters == null)
-            {
-                _filters = new List<string>();
-            }
-            _filters.Add($"| where {filterName} {filterOperator.ToString()} {value}");
+            _filters.Add($"| where {filterName} {filterOperator.ToString()} '{value}'");
+            return this;
+        }
+
+        public IAnalyticsQueryFilterBuilder WithSummarizeCount(params string[] fields)
+        {
+            _filters.Add($"| summarize count() by {string.Join(",", fields)}");
             return this;
         }
 

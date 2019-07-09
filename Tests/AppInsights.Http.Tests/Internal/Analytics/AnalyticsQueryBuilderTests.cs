@@ -20,7 +20,7 @@ namespace AppInsights.Http.Tests.Internal.Analytics
             var queryBuilder = new AnalyticsQueryBuilder(AnalyticsSchema.AvailabilityResults)
                 .WithFilter("filter1", AnalyticFilterOperator.Equal, "value1");
             var query = queryBuilder.ToString();
-            Assert.Equal(query, $"{AnalyticsSchema.AvailabilityResults} | where filter1 == value1");
+            Assert.Equal(query, $"{AnalyticsSchema.AvailabilityResults} | where filter1 == 'value1'");
         }
 
         [Fact]
@@ -31,7 +31,7 @@ namespace AppInsights.Http.Tests.Internal.Analytics
                 .WithFilter("filter2", AnalyticFilterOperator.NotEqual, "value2");
 
             var query = queryBuilder.ToString();
-            Assert.Equal(query, $"{AnalyticsSchema.AvailabilityResults} | where filter1 == value1 | where filter2 != value2");
+            Assert.Equal(query, $"{AnalyticsSchema.AvailabilityResults} | where filter1 == 'value1' | where filter2 != 'value2'");
         }
     }
 }

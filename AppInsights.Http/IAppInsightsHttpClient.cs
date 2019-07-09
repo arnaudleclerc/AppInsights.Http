@@ -1,4 +1,5 @@
-﻿using AppInsights.Http.Metadata;
+﻿using AppInsights.Http.Analytics;
+using AppInsights.Http.Metadata;
 using AppInsights.Http.Metrics;
 using System;
 using System.Collections.Generic;
@@ -11,5 +12,6 @@ namespace AppInsights.Http
     {
         Task<IMetric> GetMetricAsync(MetricsDefinition metrics);
         Task<IMetadata> GetMetadataAsync();
+        Task<IAnalyticQueryResult> QueryAsync(IAnalyticsQueryBuilder analyticsQueryBuilder);
     }
 }

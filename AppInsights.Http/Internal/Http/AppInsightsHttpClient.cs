@@ -1,5 +1,8 @@
-﻿using AppInsights.Http.Configuration;
+﻿using AppInsights.Http.Analytics;
+using AppInsights.Http.Analytics.Internals;
+using AppInsights.Http.Configuration;
 using AppInsights.Http.Exceptions;
+using AppInsights.Http.Internal.Analytics;
 using AppInsights.Http.Internal.Metadata;
 using AppInsights.Http.Internal.Metrics;
 using AppInsights.Http.Metadata;
@@ -100,7 +103,7 @@ namespace AppInsights.Http.Internal.Http
                             {
                                 metadataMetric.DefaultAggregation = child.ToString();
                             }
-                            else if(child.Path.EndsWith(".displayName"))
+                            else if (child.Path.EndsWith(".displayName"))
                             {
                                 metadataMetric.DisplayName = child.ToString();
                             }
@@ -111,7 +114,7 @@ namespace AppInsights.Http.Internal.Http
 
                     var dimensions = jsonContent["dimensions"];
                     var dimensionsCollection = new List<IMetadataDimension>();
-                    foreach(var dimension in dimensions.Children().Where(dimension => dimension.HasValues))
+                    foreach (var dimension in dimensions.Children().Where(dimension => dimension.HasValues))
                     {
                         dimensionsCollection.Add(new MetadataDimension((dimension as JProperty).Name, dimension.First["displayName"].ToString()));
                     }
@@ -119,6 +122,30 @@ namespace AppInsights.Http.Internal.Http
                     return new Metadata.Metadata(metricsCollection, dimensionsCollection);
                 }
 
+            }
+        }
+
+        public async Task<IAnalyticQueryResult> QueryAsync(IAnalyticsQueryBuilder analyticsQueryBuilder)
+        {
+            using (var client = _httpClientFactory.CreateClient(_appInsightsConfiguration.APIKey))
+            {
+                using (var request = new HttpRequestMessage(HttpMethod.Post, $"https://api.applicationinsights.io/v1/apps/{_appInsightsConfiguration.ApplicationId}/query"))
+                {
+                    request.Content = new StringContent("{\"query\": \"" + analyticsQueryBuilder.ToString() + "\"}");
+                    request.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
+                    request.Headers.TryAddWithoutValidation("x-api-key", _appInsightsConfiguration.APIKey);
+                    var result = await client.SendAsync(request);
+                    if (!result.IsSuccessStatusCode)
+                    {
+                        var error = JsonConvert.DeserializeObject<JObject>(await result.Content.ReadAsStringAsync());
+                        var appInsightsException = new AppInsightsException(error["error"]["message"].ToString(), error["error"]["code"].ToString());
+                        _logger.LogError($"AppInsightsException - {error["error"]["code"].ToString()} : {error["error"]["message"].ToString()}");
+                        throw appInsightsException;
+                    }
+
+                    var analyticsResult = JsonConvert.DeserializeObject<AppInsightsQueryResult>(await result.Content.ReadAsStringAsync());
+                    return new AnalyticQueryResult(analyticsResult);
+                }
             }
         }
 

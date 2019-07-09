@@ -8,5 +8,6 @@ namespace AppInsights.Http
     public interface IAppInsightsHttpClient
     {
         Task<IMetric> GetMetricAsync(AppInsights.Http.Metrics metrics);
+        Task<IMetadata> GetMetadataAsync();
     }
 }

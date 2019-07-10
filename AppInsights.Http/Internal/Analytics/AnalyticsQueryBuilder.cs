@@ -15,13 +15,35 @@ namespace AppInsights.Http.Internal.Analytics
 
         public IAnalyticsQueryFilterBuilder WithFilter(string filterName, AnalyticFilterOperator filterOperator, string value)
         {
+            if (filterOperator == AnalyticFilterOperator.In || filterOperator == AnalyticFilterOperator.NotIn)
+            {
+                return WithFilter(filterName, filterOperator, new[] { value });
+            }
             _filters.Add($"| where {filterName} {filterOperator.ToString()} '{value}'");
+            return this;
+        }
+
+        public IAnalyticsQueryFilterBuilder WithFilter(string filterName, AnalyticFilterOperator filterOperator, params string[] values)
+        {
+            var filter = string.Empty;
+            foreach (var value in values)
+            {
+                if (string.IsNullOrWhiteSpace(filter))
+                {
+                    filter = $"'{value}'";
+                }
+                else
+                {
+                    filter += $", '{value}'";
+                }
+            }
+            _filters.Add($"| where {filterName} {filterOperator.ToString()} ({filter})");
             return this;
         }
 
         public IAnalyticsQueryFilterBuilder WithSummarizeCount(params string[] fields)
         {
-            _filters.Add($"| summarize count() by {string.Join(",", fields)}");
+            _filters.Add($"| summarize count() by {string.Join(", ", fields)}");
             return this;
         }
 

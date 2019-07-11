@@ -4,7 +4,7 @@ namespace AppInsights.Http.Internal.Analytics
 {
     internal class AnalyticsQueryBuilderFactory : IAnalyticsQueryBuilderFactory
     {
-        public IAnalyticsQueryFilterBuilder CreateAnalyticsQueryBuilder(AnalyticsSchema schema)
+        public IAnalyticsQueryBuilder CreateAnalyticsQueryBuilder(AnalyticsSchema schema)
         {
             return new AnalyticsQueryBuilder(schema);
         }

@@ -75,5 +75,15 @@ namespace AppInsights.Http.Tests.Internal.Analytics
             var query = queryBuilder.ToString();
             Assert.Equal($"{AnalyticsSchema.AvailabilityResults} | where filter1 == 'value1' | summarize count() by name, role", query);
         }
+
+        [Fact]
+        public void Should_BuildQueryWithProject()
+        {
+            var queryBuilder = new AnalyticsQueryBuilder(AnalyticsSchema.AvailabilityResults)
+                .WithProject("field1", "field2");
+
+            var query = queryBuilder.ToString();
+            Assert.Equal($"{AnalyticsSchema.AvailabilityResults} | project field1, field2", query);
+        }
     }
 }

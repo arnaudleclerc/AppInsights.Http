@@ -2,6 +2,6 @@
 {
     public interface IAnalyticsQueryBuilderFactory
     {
-        IAnalyticsQueryFilterBuilder CreateAnalyticsQueryBuilder(AnalyticsSchema schema);
+        IAnalyticsQueryBuilder CreateAnalyticsQueryBuilder(AnalyticsSchema schema);
     }
 }

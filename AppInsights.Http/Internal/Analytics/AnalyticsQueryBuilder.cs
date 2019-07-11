@@ -54,6 +54,12 @@ namespace AppInsights.Http.Internal.Analytics
             return this;
         }
 
+        public IAnalyticsQueryBuilder WithTimestampFilter(AnalyticFilterOperator filterOperator, AnalyticTimestampFilterOperator timestampFilterOperator, AnalyticTimestampDuration duration)
+        {
+            _filters.Add($"| where timestamp {filterOperator.ToString()} {timestampFilterOperator.ToString()}({duration.ToString()}");
+            return this;
+        }
+
         public override string ToString()
         {
             var builder = new StringBuilder(Schema.ToString());

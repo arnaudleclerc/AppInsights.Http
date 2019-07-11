@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace AppInsights.Http.Analytics
+﻿namespace AppInsights.Http.Analytics
 {
     public class AnalyticFilterOperator
     {
@@ -15,6 +11,8 @@ namespace AppInsights.Http.Analytics
         public static AnalyticFilterOperator HasSuffix = new AnalyticFilterOperator("hassuffix");
         public static AnalyticFilterOperator Like = new AnalyticFilterOperator("=~");
         public static AnalyticFilterOperator In = new AnalyticFilterOperator("in");
+        public static AnalyticFilterOperator Inferior = new AnalyticFilterOperator("<");
+        public static AnalyticFilterOperator InferiorOrEqual = new AnalyticFilterOperator("<=");
         public static AnalyticFilterOperator MatchesRegex = new AnalyticFilterOperator("matches regex");
         public static AnalyticFilterOperator NotContains = new AnalyticFilterOperator("!contains");
         public static AnalyticFilterOperator NotContainsCs = new AnalyticFilterOperator("!containscs");
@@ -26,6 +24,8 @@ namespace AppInsights.Http.Analytics
         public static AnalyticFilterOperator NotLike = new AnalyticFilterOperator("!~");
         public static AnalyticFilterOperator NotIn = new AnalyticFilterOperator("!in");
         public static AnalyticFilterOperator NotStartsWith = new AnalyticFilterOperator("!startswith");
+        public static AnalyticFilterOperator Superior = new AnalyticFilterOperator(">");
+        public static AnalyticFilterOperator SuperiorOrEqual = new AnalyticFilterOperator(">=");
         public static AnalyticFilterOperator StartsWith = new AnalyticFilterOperator("startswith");
 
 

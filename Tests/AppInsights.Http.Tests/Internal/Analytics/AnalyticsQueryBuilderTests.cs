@@ -85,5 +85,15 @@ namespace AppInsights.Http.Tests.Internal.Analytics
             var query = queryBuilder.ToString();
             Assert.Equal($"{AnalyticsSchema.AvailabilityResults} | project field1, field2", query);
         }
+
+        [Fact]
+        public void Should_BuildQueryWithTimestamp_Ago()
+        {
+            var queryBuilder = new AnalyticsQueryBuilder(AnalyticsSchema.AvailabilityResults)
+                .WithTimestampFilter(AnalyticFilterOperator.SuperiorOrEqual, AnalyticTimestampFilterOperator.Ago, AnalyticTimestampDuration.HalfDay);
+
+            var query = queryBuilder.ToString();
+            Assert.Equal($"{AnalyticsSchema.AvailabilityResults} | where timestamp >= ago(12h)", query);
+        }
     }
 }

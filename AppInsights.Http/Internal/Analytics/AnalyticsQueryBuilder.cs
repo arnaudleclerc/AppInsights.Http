@@ -56,7 +56,7 @@ namespace AppInsights.Http.Internal.Analytics
 
         public IAnalyticsQueryBuilder WithTimestampFilter(AnalyticFilterOperator filterOperator, AnalyticTimestampFilterOperator timestampFilterOperator, AnalyticTimestampDuration duration)
         {
-            _filters.Add($"| where timestamp {filterOperator.ToString()} {timestampFilterOperator.ToString()}({duration.ToString()}");
+            _filters.Add($"| where timestamp {filterOperator.ToString()} {timestampFilterOperator.ToString()}({duration.ToString()})");
             return this;
         }
 

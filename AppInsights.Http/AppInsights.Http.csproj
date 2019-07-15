@@ -7,6 +7,7 @@
     <PackageProjectUrl>https://github.com/arnaudleclerc/azure-appinsights-api-wrapper</PackageProjectUrl>
     <RepositoryUrl>https://github.com/arnaudleclerc/azure-appinsights-api-wrapper</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
+    <Description>SDK allowing to retrieve data from the Application Insights API</Description>
   </PropertyGroup>
 
   <ItemGroup>

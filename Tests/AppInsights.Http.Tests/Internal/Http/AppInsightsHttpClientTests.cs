@@ -38,7 +38,7 @@ namespace AppInsights.Http.Tests.Internal.Http
         }
 
         [Fact]
-        public async Task Should_ThrowException_ResultIsNoSuccess()
+        public async Task GetMetricAsync_Should_ThrowException_ResultIsNoSuccess()
         {
             var httpClientFactory = new Mock<IHttpClientFactory>();
             var options = new Mock<IOptions<AppInsightsConfiguration>>();
@@ -73,7 +73,7 @@ namespace AppInsights.Http.Tests.Internal.Http
         }
 
         [Fact]
-        public async Task Should_ReturnMetric()
+        public async Task GetMetricAsync_Should_ReturnMetric()
         {
             var httpClientFactory = new Mock<IHttpClientFactory>();
             var options = new Mock<IOptions<AppInsightsConfiguration>>();

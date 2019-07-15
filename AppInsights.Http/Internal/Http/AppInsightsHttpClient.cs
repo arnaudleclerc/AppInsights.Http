@@ -149,5 +149,29 @@ namespace AppInsights.Http.Internal.Http
             }
         }
 
+        public async Task<IAnalyticQueryResult> QueryAsync(string query)
+        {
+            using (var client = _httpClientFactory.CreateClient(_appInsightsConfiguration.APIKey))
+            {
+                using (var request = new HttpRequestMessage(HttpMethod.Post, $"https://api.applicationinsights.io/v1/apps/{_appInsightsConfiguration.ApplicationId}/query"))
+                {
+                    request.Content = new StringContent("{\"query\": \"" + query + "\"}");
+                    request.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
+                    request.Headers.TryAddWithoutValidation("x-api-key", _appInsightsConfiguration.APIKey);
+                    var result = await client.SendAsync(request);
+                    if (!result.IsSuccessStatusCode)
+                    {
+                        var error = JsonConvert.DeserializeObject<JObject>(await result.Content.ReadAsStringAsync());
+                        var appInsightsException = new AppInsightsException(error["error"]["message"].ToString(), error["error"]["code"].ToString());
+                        _logger.LogError($"AppInsightsException - {error["error"]["code"].ToString()} : {error["error"]["message"].ToString()}");
+                        throw appInsightsException;
+                    }
+
+                    var analyticsResult = JsonConvert.DeserializeObject<AppInsightsQueryResult>(await result.Content.ReadAsStringAsync());
+                    return new AnalyticQueryResult(analyticsResult);
+                }
+            }
+        }
+
     }
 }

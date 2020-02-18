@@ -8,7 +8,6 @@ using AppInsights.Http.Configuration;
 using AppInsights.Http.Exceptions;
 using AppInsights.Http.Internal.Http;
 using AppInsights.Http.Metrics;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
 using Xunit;
@@ -42,7 +41,6 @@ namespace AppInsights.Http.Tests.Internal.Http
         {
             var httpClientFactory = new Mock<IHttpClientFactory>();
             var options = new Mock<IOptions<AppInsightsConfiguration>>();
-            var logger = new Mock<ILogger>();
 
             var appInsightsConfiguration = new AppInsightsConfiguration
             {
@@ -64,8 +62,7 @@ namespace AppInsights.Http.Tests.Internal.Http
             httpClientFactory.Setup(hcf => hcf.CreateClient(It.IsAny<string>())).Returns(httpClient.Object);
 
             var appInsightsHttpClient = new AppInsightsHttpClient(httpClientFactory.Object,
-                options.Object,
-                logger.Object);
+                options.Object);
 
             await Assert.ThrowsAsync<AppInsightsException>(async() => await appInsightsHttpClient.GetMetricAsync(metrics));
 
@@ -76,7 +73,6 @@ namespace AppInsights.Http.Tests.Internal.Http
         public async Task GetMetricAsync_Should_ThrowException_ResultIsNoSuccess_MultipleConfigurations()
         {
             var httpClientFactory = new Mock<IHttpClientFactory>();
-            var logger = new Mock<ILogger>();
 
             var appInsightsConfiguration = new AppInsightsConfiguration
             {
@@ -102,8 +98,7 @@ namespace AppInsights.Http.Tests.Internal.Http
             httpClientFactory.Setup(hcf => hcf.CreateClient(It.IsAny<string>())).Returns(httpClient.Object);
 
             var appInsightsHttpClient = new AppInsightsHttpClient(httpClientFactory.Object,
-                new [] { appInsightsConfiguration, secondConfiguration },
-                logger.Object);
+                new [] { appInsightsConfiguration, secondConfiguration });
 
             await Assert.ThrowsAsync<AppInsightsException>(async() => await appInsightsHttpClient.GetMetricAsync(metrics));
 
@@ -115,7 +110,6 @@ namespace AppInsights.Http.Tests.Internal.Http
         {
             var httpClientFactory = new Mock<IHttpClientFactory>();
             var options = new Mock<IOptions<AppInsightsConfiguration>>();
-            var logger = new Mock<ILogger>();
 
             var appInsightsConfiguration = new AppInsightsConfiguration
             {
@@ -137,8 +131,7 @@ namespace AppInsights.Http.Tests.Internal.Http
             httpClientFactory.Setup(hcf => hcf.CreateClient(It.IsAny<string>())).Returns(httpClient.Object);
 
             var appInsightsHttpClient = new AppInsightsHttpClient(httpClientFactory.Object,
-                options.Object,
-                logger.Object);
+                options.Object);
 
             var result = await appInsightsHttpClient.GetMetricAsync(metrics);
 
@@ -151,7 +144,6 @@ namespace AppInsights.Http.Tests.Internal.Http
         public async Task GetMetricAsync_Should_ReturnMetric_MultipleConfigurations()
         {
             var httpClientFactory = new Mock<IHttpClientFactory>();
-            var logger = new Mock<ILogger>();
 
             var appInsightsConfiguration = new AppInsightsConfiguration
             {
@@ -178,8 +170,7 @@ namespace AppInsights.Http.Tests.Internal.Http
             httpClientFactory.Setup(hcf => hcf.CreateClient(It.IsAny<string>())).Returns(httpClient.Object);
 
             var appInsightsHttpClient = new AppInsightsHttpClient(httpClientFactory.Object,
-                new [] { appInsightsConfiguration, secondConfiguration },
-                logger.Object);
+                new [] { appInsightsConfiguration, secondConfiguration });
 
             var result = await appInsightsHttpClient.GetMetricAsync(metrics);
 

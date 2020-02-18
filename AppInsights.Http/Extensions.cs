@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net.Http;
 using AppInsights.Http.Analytics;
 using AppInsights.Http.Configuration;
 using AppInsights.Http.Internal.Analytics;
 using AppInsights.Http.Internal.Http;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace AppInsights.Http
@@ -29,8 +27,7 @@ namespace AppInsights.Http
                 .AddSingleton<IAnalyticsQueryBuilderFactory, AnalyticsQueryBuilderFactory>()
                 .AddSingleton<IAppInsightsHttpClient>(sp => new AppInsightsHttpClient(
                     sp.GetRequiredService<IHttpClientFactory>(),
-                    sp.GetRequiredService<IOptions<AppInsightsConfiguration>>(),
-                    sp.GetRequiredService<ILogger>()
+                    sp.GetRequiredService<IOptions<AppInsightsConfiguration>>()
                 ));
         }
 
@@ -47,8 +44,7 @@ namespace AppInsights.Http
                 .AddSingleton<IAnalyticsQueryBuilderFactory, AnalyticsQueryBuilderFactory>()
                 .AddSingleton<IAppInsightsHttpClient>(sp => new AppInsightsHttpClient(
                     sp.GetRequiredService<IHttpClientFactory>(),
-                    appInsightsConfigurations,
-                    sp.GetRequiredService<ILogger>()
+                    appInsightsConfigurations
                 ));
         }
     }

@@ -20,7 +20,7 @@ namespace AppInsights.Http.Internal.Analytics
             {
                 return WithFilter(filterName, filterOperator, new[] { value });
             }
-            _filters.Add($"| where {filterName} {filterOperator.ToString()} '{value}'");
+            _filters.Add($"| where {filterName} {filterOperator} '{value}'");
             return this;
         }
 
@@ -38,7 +38,7 @@ namespace AppInsights.Http.Internal.Analytics
                     filter += $", '{value}'";
                 }
             }
-            _filters.Add($"| where {filterName} {filterOperator.ToString()} ({filter})");
+            _filters.Add($"| where {filterName} {filterOperator} ({filter})");
             return this;
         }
 
@@ -56,7 +56,7 @@ namespace AppInsights.Http.Internal.Analytics
 
         public IAnalyticsQueryBuilder WithTimestampFilter(AnalyticFilterOperator filterOperator, AnalyticTimestampFilterOperator timestampFilterOperator, AnalyticTimestampDuration duration)
         {
-            _filters.Add($"| where timestamp {filterOperator.ToString()} {timestampFilterOperator.ToString()}({duration.ToString()})");
+            _filters.Add($"| where timestamp {filterOperator} {timestampFilterOperator}({duration})");
             return this;
         }
 

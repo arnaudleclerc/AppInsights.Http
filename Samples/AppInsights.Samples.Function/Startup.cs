@@ -20,7 +20,6 @@ namespace AppInsights.Samples.Function
                 .Build();
 
             builder.Services
-                .AddTransient(sp => sp.GetRequiredService<ILoggerFactory>().CreateLogger("AppInsights"))
                 .AddAppInsightsHttpClient(appInsightsConfig =>
                 {
                     appInsightsConfig.APIKey = config["AppInsightsApiKey"];

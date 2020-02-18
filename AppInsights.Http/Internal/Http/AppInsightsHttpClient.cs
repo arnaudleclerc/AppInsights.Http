@@ -11,7 +11,6 @@ using AppInsights.Http.Internal.Metadata;
 using AppInsights.Http.Internal.Metrics;
 using AppInsights.Http.Metadata;
 using AppInsights.Http.Metrics;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -22,11 +21,8 @@ namespace AppInsights.Http.Internal.Http
     {
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly IEnumerable<AppInsightsConfiguration> _appInsightsConfigurations;
-        private readonly ILogger _logger;
-
         public AppInsightsHttpClient(IHttpClientFactory httpClientFactory,
-            IOptions<AppInsightsConfiguration> options,
-            ILogger logger)
+            IOptions<AppInsightsConfiguration> options)
         {
             if (string.IsNullOrWhiteSpace(options.Value?.ApplicationId) || string.IsNullOrWhiteSpace(options.Value.APIKey))
             {
@@ -37,12 +33,10 @@ namespace AppInsights.Http.Internal.Http
             {
                 options.Value
             };
-            _logger = logger;
         }
 
         public AppInsightsHttpClient(IHttpClientFactory httpClientFactory,
-            AppInsightsConfiguration[] configurations,
-            ILogger logger)
+            AppInsightsConfiguration[] configurations)
         {
             var validConfigurations = configurations?.Where(c => !string.IsNullOrWhiteSpace(c?.ApplicationId) && !string.IsNullOrWhiteSpace(c.APIKey));
             if (validConfigurations.Count() == 0)
@@ -60,7 +54,6 @@ namespace AppInsights.Http.Internal.Http
 
             _httpClientFactory = httpClientFactory;
             _appInsightsConfigurations = validConfigurations;
-            _logger = logger;
         }
 
         public async Task<IMetric> GetMetricAsync(MetricsDefinition metrics) => await GetMetricAsync(metrics, _appInsightsConfigurations.First().ApplicationId).ConfigureAwait(false);
@@ -78,7 +71,6 @@ namespace AppInsights.Http.Internal.Http
                     {
                         var error = JsonConvert.DeserializeObject<JObject>(await result.Content.ReadAsStringAsync().ConfigureAwait(false));
                         var appInsightsException = new AppInsightsException(error["error"]["message"].ToString(), error["error"]["code"].ToString());
-                        _logger.LogError($"AppInsightsException - {error["error"]["code"]} : {error["error"]["message"]}");
                         throw appInsightsException;
                     }
                     var content = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -103,7 +95,6 @@ namespace AppInsights.Http.Internal.Http
                     {
                         var error = JsonConvert.DeserializeObject<JObject>(await result.Content.ReadAsStringAsync().ConfigureAwait(false));
                         var appInsightsException = new AppInsightsException(error["error"]["message"].ToString(), error["error"]["code"].ToString());
-                        _logger.LogError($"AppInsightsException - {error["error"]["code"]} : {error["error"]["message"]}");
                         throw appInsightsException;
                     }
 
@@ -178,7 +169,6 @@ namespace AppInsights.Http.Internal.Http
                     {
                         var error = JsonConvert.DeserializeObject<JObject>(await result.Content.ReadAsStringAsync().ConfigureAwait(false));
                         var appInsightsException = new AppInsightsException(error["error"]["message"].ToString(), error["error"]["code"].ToString());
-                        _logger.LogError($"AppInsightsException - {error["error"]["code"]} : {error["error"]["message"]}");
                         throw appInsightsException;
                     }
 
@@ -205,7 +195,6 @@ namespace AppInsights.Http.Internal.Http
                     {
                         var error = JsonConvert.DeserializeObject<JObject>(await result.Content.ReadAsStringAsync().ConfigureAwait(false));
                         var appInsightsException = new AppInsightsException(error["error"]["message"].ToString(), error["error"]["code"].ToString());
-                        _logger.LogError($"AppInsightsException - {error["error"]["code"]} : {error["error"]["message"]}");
                         throw appInsightsException;
                     }
 

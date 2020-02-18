@@ -18,5 +18,21 @@ namespace AppInsights.Http.Configuration
         /// Constructor
         /// </summary>
         public AppInsightsConfiguration() { }
+
+        public AppInsightsConfiguration(string applicationId, string apiKey)
+        {
+            if (string.IsNullOrWhiteSpace(applicationId))
+            {
+                throw new ArgumentException("A valid ApplicationId must be given");
+            }
+
+            if (string.IsNullOrWhiteSpace(apiKey))
+            {
+                throw new ArgumentException("A valid APIKey must be given");
+            }
+
+            ApplicationId = applicationId;
+            APIKey = apiKey;
+        }
     }
 }

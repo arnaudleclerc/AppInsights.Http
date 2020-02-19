@@ -1,6 +1,5 @@
 ﻿using AppInsights.Http.Analytics;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace AppInsights.Http.Internal.Analytics
@@ -55,6 +54,12 @@ namespace AppInsights.Http.Internal.Analytics
         }
 
         public IAnalyticsQueryBuilder WithTimestampFilter(AnalyticFilterOperator filterOperator, AnalyticTimestampFilterOperator timestampFilterOperator, AnalyticTimestampDuration duration)
+        {
+            _filters.Add($"| where timestamp {filterOperator} {timestampFilterOperator}({duration})");
+            return this;
+        }
+
+        public IAnalyticsQueryBuilder WithTimestampFilter(AnalyticFilterOperator filterOperator, AnalyticTimestampFilterOperator timestampFilterOperator, string duration)
         {
             _filters.Add($"| where timestamp {filterOperator} {timestampFilterOperator}({duration})");
             return this;

@@ -95,5 +95,53 @@ namespace AppInsights.Http.Tests.Internal.Analytics
             var query = queryBuilder.ToString();
             Assert.Equal($"{AnalyticsSchema.AvailabilityResults} | where timestamp >= ago(12h)", query);
         }
+
+        [Fact]
+        public void Should_BuildQuery_WithTop()
+        {
+            const int top = 10;
+            const string byField = "field1";
+            var queryBuilder = new AnalyticsQueryBuilder(AnalyticsSchema.AvailabilityResults)
+                .WithTop(top, byField);
+
+            var query = queryBuilder.ToString();
+            Assert.Equal($"{AnalyticsSchema.AvailabilityResults} | top {top} by {byField}", query);
+        }
+
+        [Fact]
+        public void Should_BuildQuery_WithTop_AndTopOrdering()
+        {
+            const int top = 10;
+            const string byField = "field1";
+            var queryBuilder = new AnalyticsQueryBuilder(AnalyticsSchema.AvailabilityResults)
+                .WithTop(top, byField, AnalyticTopOrderingOperator.Asc);
+
+            var query = queryBuilder.ToString();
+            Assert.Equal($"{AnalyticsSchema.AvailabilityResults} | top {top} by {byField} asc", query);
+        }
+
+        [Fact]
+        public void Should_BuildQuery_WithTop_AndNullsOrdering()
+        {
+            const int top = 10;
+            const string byField = "field1";
+            var queryBuilder = new AnalyticsQueryBuilder(AnalyticsSchema.AvailabilityResults)
+                .WithTop(top, byField, AnalyticNullsOrderingOperator.NullsLast);
+
+            var query = queryBuilder.ToString();
+            Assert.Equal($"{AnalyticsSchema.AvailabilityResults} | top {top} by {byField} nulls last", query);
+        }
+
+        [Fact]
+        public void Should_BuildQuery_WithTop_AndTopOrdering_AndNullsOrdering()
+        {
+            const int top = 10;
+            const string byField = "field1";
+            var queryBuilder = new AnalyticsQueryBuilder(AnalyticsSchema.AvailabilityResults)
+                .WithTop(top, byField, AnalyticTopOrderingOperator.Asc, AnalyticNullsOrderingOperator.NullsFirst);
+
+            var query = queryBuilder.ToString();
+            Assert.Equal($"{AnalyticsSchema.AvailabilityResults} | top {top} by {byField} asc nulls first", query);
+        }
     }
 }

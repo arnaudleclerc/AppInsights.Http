@@ -1,6 +1,6 @@
-﻿using AppInsights.Http.Analytics;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text;
+using AppInsights.Http.Analytics;
 
 namespace AppInsights.Http.Internal.Analytics
 {
@@ -17,7 +17,7 @@ namespace AppInsights.Http.Internal.Analytics
         {
             if (filterOperator == AnalyticFilterOperator.In || filterOperator == AnalyticFilterOperator.NotIn)
             {
-                return WithFilter(filterName, filterOperator, new[] { value });
+                return WithFilter(filterName, filterOperator, new [] { value });
             }
             _filters.Add($"| where {filterName} {filterOperator} '{value}'");
             return this;
@@ -65,6 +65,30 @@ namespace AppInsights.Http.Internal.Analytics
             return this;
         }
 
+        public IAnalyticsQueryBuilder WithTop(int top, string byField)
+        {
+            _filters.Add($"| top {top} by {byField}");
+            return this;
+        }
+
+        public IAnalyticsQueryBuilder WithTop(int top, string byField, AnalyticTopOrderingOperator topOrderingOperator)
+        {
+            _filters.Add($"| top {top} by {byField} {topOrderingOperator}");
+            return this;
+        }
+
+        public IAnalyticsQueryBuilder WithTop(int top, string byField, AnalyticNullsOrderingOperator nullsOrderingOperator)
+        {
+             _filters.Add($"| top {top} by {byField} {nullsOrderingOperator}");
+            return this;
+        }
+
+        public IAnalyticsQueryBuilder WithTop(int top, string byField, AnalyticTopOrderingOperator topOrderingOperator, AnalyticNullsOrderingOperator nullsOrderingOperator)
+        {
+            _filters.Add($"| top {top} by {byField} {topOrderingOperator} {nullsOrderingOperator}");
+            return this;
+        }
+
         public override string ToString()
         {
             var builder = new StringBuilder(Schema.ToString());
@@ -76,7 +100,7 @@ namespace AppInsights.Http.Internal.Analytics
                 }
             }
 
-            if(!string.IsNullOrWhiteSpace(_project))
+            if (!string.IsNullOrWhiteSpace(_project))
             {
                 builder.Append(" " + _project);
             }

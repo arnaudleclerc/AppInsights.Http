@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 namespace AppInsights.Http
 {
+    /// <summary>
+    /// Exposes methods to call the application insights API
+    /// </summary>
     public interface IAppInsightsHttpClient
     {
         /// <summary>
@@ -17,7 +20,7 @@ namespace AppInsights.Http
         /// Fetch metrics from the application insights API according to the given definition
         /// </summary>
         /// <param name="metrics">Type of metrics to retrieve</param>
-        /// <param name="applicationId">ID of the application</param>
+        /// <param name="applicationId">ID of the application to get the metrics from</param>
         /// <returns>Metrics retrieved from application insights.</returns>
         Task<IMetric> GetMetricAsync(MetricsDefinition metrics, string applicationId);
         /// <summary>
@@ -28,7 +31,7 @@ namespace AppInsights.Http
         /// <summary>
         /// Fetch the metadata from the application insights API
         /// </summary>
-        /// <param name="applicationId">ID of the application</param>
+        /// <param name="applicationId">ID of the application to fetch the metadata from</param>
         /// <returns>Metadata retrieved from application insights.</returns>
         Task<IMetadata> GetMetadataAsync(string applicationId);
         /// <summary>
@@ -41,7 +44,7 @@ namespace AppInsights.Http
         /// Executes an analytics query
         /// </summary>
         /// <param name="analyticsQueryBuilder">Query to execute</param>
-        /// <param name="applicationId">ID of the application</param>
+        /// <param name="applicationId">ID of the application on which the query will be executed</param>
         /// <returns>Result of the query</returns>
         Task<IAnalyticQueryResult> QueryAsync(IAnalyticsQueryBuilder analyticsQueryBuilder, string applicationId);
         /// <summary>
@@ -54,7 +57,7 @@ namespace AppInsights.Http
         /// Executes an analytics query
         /// </summary>
         /// <param name="query">Query to execute</param>
-        /// <param name="applicationId">ID of the application</param>
+        /// <param name="applicationId">ID of the application on which the query will be executed</param>
         /// <returns>Result of the query</returns>
         Task<IAnalyticQueryResult> QueryAsync(string query, string applicationId);
     }

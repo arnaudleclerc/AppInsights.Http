@@ -6,7 +6,66 @@ Library allowing to retrieve data from the Application Insights API.
 
 ## Authentication to the API
 
-So far, only the API key authentication is supported. 
+### Using OAuth with client_credentials
+
+You can authenticate against the Application Insights API using OAuth with client_credentials. To do so, you need to provide :
+
+- The Application Id of Application Insights
+- ClientId of the application registered on AAD
+- TenantId of your AAD Instance
+- An implementation of `IAppInsightsCredentialProvider` to retrieve your client secret. You can register this service directly on IServiceCollection or by calling the generic `AddAppInsightsHttpClient` with the type you want to register as argument.
+
+A sample is available at /samples/AppInsights.Samples.Oauth
+
+```
+Services.AddSingleton<IAppInsightsCredentialProvider>(new AppInsightsCredentialProvider(config["AppInsightsClientSecret"]))
+                .AddAppInsightsHttpClient(options => {
+                    options.ApplicationId = config["AppInsightsApplicationId"];
+                    options.ClientId = config["AppInsightsClientId"];
+                    options.TenantId = config["AppInsightsTenantId"];
+                });
+```
+
+```
+namespace AppInsights.Samples.OAuth
+{
+    using System.Threading.Tasks;
+    using AppInsights.Http.Authentication;
+
+    public class AppInsightsCredentialProvider : IAppInsightsCredentialProvider
+    {
+        private readonly string _clientSecret;
+
+        public AppInsightsCredentialProvider(string clientSecret)
+        {
+            _clientSecret = clientSecret;
+        }
+
+        public Task<string> GetClientSecretAsync()
+        {
+            return Task.FromResult(_clientSecret);
+        }
+    }
+}
+
+```
+
+### With ApplicationId and API Key
+
+This authentication simply puts a `x-api-key` header with your API Key on the request to Application Insights. To do so, you need to provide :
+
+- The Application Id of Application Insights
+- The API Key generated on Application Insights
+
+A sample is available at /samples/AppInsights.Samples.Function
+
+```
+Services.AddAppInsightsHttpClient(appInsightsConfig =>
+                {
+                    appInsightsConfig.APIKey = config["AppInsightsApiKey"];
+                    appInsightsConfig.ApplicationId = config["AppInsightsApplicationId"];
+                });
+```
 
 ## Registering the services
 

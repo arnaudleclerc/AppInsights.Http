@@ -1,9 +1,9 @@
-﻿using AppInsights.Http.Analytics;
-using AppInsights.Http.Internal.Analytics;
-using Xunit;
-
-namespace AppInsights.Http.Tests.Internal.Analytics
+﻿namespace AppInsights.Http.Tests.Internal.Analytics
 {
+    using AppInsights.Http.Analytics;
+    using AppInsights.Http.Internal.Analytics;
+    using Xunit;
+    
     public class AnalyticsQueryBuilderTests
     {
         [Fact]

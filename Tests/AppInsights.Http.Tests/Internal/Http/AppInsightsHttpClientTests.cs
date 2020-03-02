@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using AppInsights.Http.Configuration;
 using AppInsights.Http.Exceptions;
+using AppInsights.Http.Internal.Authentication;
 using AppInsights.Http.Internal.Http;
 using AppInsights.Http.Metrics;
 using Microsoft.Extensions.Options;
@@ -41,6 +42,12 @@ namespace AppInsights.Http.Tests.Internal.Http
         {
             var httpClientFactory = new Mock<IHttpClientFactory>();
             var options = new Mock<IOptions<AppInsightsConfiguration>>();
+            var requestAuthenticator = new Mock<AppInsightsRequestAuthenticator>();
+            requestAuthenticator.Setup(ra => ra.AddAuthenticationAsync(It.IsAny<HttpRequestMessage>(), It.IsAny<AppInsightsConfiguration>())).Callback(
+                (HttpRequestMessage request, AppInsightsConfiguration configuration) => {
+                    request.Headers.Add("appinsights-mock-header", "appinsights-mock-header");
+                }
+            );
 
             var appInsightsConfiguration = new AppInsightsConfiguration
             {
@@ -56,23 +63,31 @@ namespace AppInsights.Http.Tests.Internal.Http
                     Content = new StringContent("{'error': {'message': 'The requested path does not exist', 'code': 'PathNotFoundError'}}")
                 }, hrm => hrm.Method == HttpMethod.Get &&
                 hrm.RequestUri.ToString() == $"https://api.applicationinsights.io/v1/apps/{appInsightsConfiguration.ApplicationId}/metrics/{metrics}" &&
-                hrm.Headers.Contains("x-api-key") &&
-                hrm.Headers.GetValues("x-api-key").First() == appInsightsConfiguration.APIKey);
+                hrm.Headers.Contains("appinsights-mock-header"));
             var httpClient = new Mock<HttpClient>(httpClientHandler);
             httpClientFactory.Setup(hcf => hcf.CreateClient(It.IsAny<string>())).Returns(httpClient.Object);
 
             var appInsightsHttpClient = new AppInsightsHttpClient(httpClientFactory.Object,
-                options.Object);
+                options.Object,
+                requestAuthenticator.Object);
 
             await Assert.ThrowsAsync<AppInsightsException>(async() => await appInsightsHttpClient.GetMetricAsync(metrics));
 
-            httpClientFactory.Verify(hcf => hcf.CreateClient(appInsightsConfiguration.APIKey), Times.Once);
+            httpClientFactory.Verify(hcf => hcf.CreateClient(appInsightsConfiguration.ApplicationId), Times.Once);
+            requestAuthenticator.Verify(ra => ra.AddAuthenticationAsync(It.IsAny<HttpRequestMessage>(), appInsightsConfiguration), Times.Once);
+            requestAuthenticator.VerifyNoOtherCalls();
         }
 
         [Fact]
         public async Task GetMetricAsync_Should_ThrowException_ResultIsNoSuccess_MultipleConfigurations()
         {
             var httpClientFactory = new Mock<IHttpClientFactory>();
+            var requestAuthenticator = new Mock<AppInsightsRequestAuthenticator>();
+            requestAuthenticator.Setup(ra => ra.AddAuthenticationAsync(It.IsAny<HttpRequestMessage>(), It.IsAny<AppInsightsConfiguration>())).Callback(
+                (HttpRequestMessage request, AppInsightsConfiguration configuration) => {
+                    request.Headers.Add("appinsights-mock-header", "appinsights-mock-header");
+                }
+            );
 
             var appInsightsConfiguration = new AppInsightsConfiguration
             {
@@ -92,17 +107,19 @@ namespace AppInsights.Http.Tests.Internal.Http
                     Content = new StringContent("{'error': {'message': 'The requested path does not exist', 'code': 'PathNotFoundError'}}")
                 }, hrm => hrm.Method == HttpMethod.Get &&
                 hrm.RequestUri.ToString() == $"https://api.applicationinsights.io/v1/apps/{appInsightsConfiguration.ApplicationId}/metrics/{metrics}" &&
-                hrm.Headers.Contains("x-api-key") &&
-                hrm.Headers.GetValues("x-api-key").First() == appInsightsConfiguration.APIKey);
+                hrm.Headers.Contains("appinsights-mock-header"));
             var httpClient = new Mock<HttpClient>(httpClientHandler);
             httpClientFactory.Setup(hcf => hcf.CreateClient(It.IsAny<string>())).Returns(httpClient.Object);
 
             var appInsightsHttpClient = new AppInsightsHttpClient(httpClientFactory.Object,
-                new [] { appInsightsConfiguration, secondConfiguration });
+                new [] { appInsightsConfiguration, secondConfiguration },
+                requestAuthenticator.Object);
 
             await Assert.ThrowsAsync<AppInsightsException>(async() => await appInsightsHttpClient.GetMetricAsync(metrics));
 
-            httpClientFactory.Verify(hcf => hcf.CreateClient(appInsightsConfiguration.APIKey), Times.Once);
+            httpClientFactory.Verify(hcf => hcf.CreateClient(appInsightsConfiguration.ApplicationId), Times.Once);
+            requestAuthenticator.Verify(ra => ra.AddAuthenticationAsync(It.IsAny<HttpRequestMessage>(), appInsightsConfiguration), Times.Once);
+            requestAuthenticator.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -110,6 +127,12 @@ namespace AppInsights.Http.Tests.Internal.Http
         {
             var httpClientFactory = new Mock<IHttpClientFactory>();
             var options = new Mock<IOptions<AppInsightsConfiguration>>();
+            var requestAuthenticator = new Mock<AppInsightsRequestAuthenticator>();
+            requestAuthenticator.Setup(ra => ra.AddAuthenticationAsync(It.IsAny<HttpRequestMessage>(), It.IsAny<AppInsightsConfiguration>())).Callback(
+                (HttpRequestMessage request, AppInsightsConfiguration configuration) => {
+                    request.Headers.Add("appinsights-mock-header", "appinsights-mock-header");
+                }
+            );
 
             var appInsightsConfiguration = new AppInsightsConfiguration
             {
@@ -125,25 +148,33 @@ namespace AppInsights.Http.Tests.Internal.Http
                     Content = new StringContent("{'value': {'start': '2019-07-08T18:29:28.972Z','end': '2019-07-09T06:29:28.972Z','requests/count': {'sum': 367}}}")
                 }, hrm => hrm.Method == HttpMethod.Get &&
                 hrm.RequestUri.ToString() == $"https://api.applicationinsights.io/v1/apps/{appInsightsConfiguration.ApplicationId}/metrics/{metrics}" &&
-                hrm.Headers.Contains("x-api-key") &&
-                hrm.Headers.GetValues("x-api-key").First() == appInsightsConfiguration.APIKey);;
+                hrm.Headers.Contains("appinsights-mock-header"));
             var httpClient = new Mock<HttpClient>(httpClientHandler);
             httpClientFactory.Setup(hcf => hcf.CreateClient(It.IsAny<string>())).Returns(httpClient.Object);
 
             var appInsightsHttpClient = new AppInsightsHttpClient(httpClientFactory.Object,
-                options.Object);
+                options.Object,
+                requestAuthenticator.Object);
 
             var result = await appInsightsHttpClient.GetMetricAsync(metrics);
 
             Assert.Equal(367, result.Aggregation.Sum);
 
-            httpClientFactory.Verify(hcf => hcf.CreateClient(appInsightsConfiguration.APIKey), Times.Once);
+            httpClientFactory.Verify(hcf => hcf.CreateClient(appInsightsConfiguration.ApplicationId), Times.Once);
+            requestAuthenticator.Verify(ra => ra.AddAuthenticationAsync(It.IsAny<HttpRequestMessage>(), appInsightsConfiguration), Times.Once);
+            requestAuthenticator.VerifyNoOtherCalls();
         }
 
         [Fact]
         public async Task GetMetricAsync_Should_ReturnMetric_MultipleConfigurations()
         {
             var httpClientFactory = new Mock<IHttpClientFactory>();
+            var requestAuthenticator = new Mock<AppInsightsRequestAuthenticator>();
+            requestAuthenticator.Setup(ra => ra.AddAuthenticationAsync(It.IsAny<HttpRequestMessage>(), It.IsAny<AppInsightsConfiguration>())).Callback(
+                (HttpRequestMessage request, AppInsightsConfiguration configuration) => {
+                    request.Headers.Add("appinsights-mock-header", "appinsights-mock-header");
+                }
+            );
 
             var appInsightsConfiguration = new AppInsightsConfiguration
             {
@@ -164,19 +195,21 @@ namespace AppInsights.Http.Tests.Internal.Http
                     Content = new StringContent("{'value': {'start': '2019-07-08T18:29:28.972Z','end': '2019-07-09T06:29:28.972Z','requests/count': {'sum': 367}}}")
                 }, hrm => hrm.Method == HttpMethod.Get &&
                 hrm.RequestUri.ToString() == $"https://api.applicationinsights.io/v1/apps/{appInsightsConfiguration.ApplicationId}/metrics/{metrics}" &&
-                hrm.Headers.Contains("x-api-key") &&
-                hrm.Headers.GetValues("x-api-key").First() == appInsightsConfiguration.APIKey);;
+                hrm.Headers.Contains("appinsights-mock-header"));
             var httpClient = new Mock<HttpClient>(httpClientHandler);
             httpClientFactory.Setup(hcf => hcf.CreateClient(It.IsAny<string>())).Returns(httpClient.Object);
 
             var appInsightsHttpClient = new AppInsightsHttpClient(httpClientFactory.Object,
-                new [] { appInsightsConfiguration, secondConfiguration });
+                new [] { appInsightsConfiguration, secondConfiguration },
+                requestAuthenticator.Object);
 
             var result = await appInsightsHttpClient.GetMetricAsync(metrics);
 
             Assert.Equal(367, result.Aggregation.Sum);
 
-            httpClientFactory.Verify(hcf => hcf.CreateClient(appInsightsConfiguration.APIKey), Times.Once);
+            httpClientFactory.Verify(hcf => hcf.CreateClient(appInsightsConfiguration.ApplicationId), Times.Once);
+            requestAuthenticator.Verify(ra => ra.AddAuthenticationAsync(It.IsAny<HttpRequestMessage>(), appInsightsConfiguration), Times.Once);
+            requestAuthenticator.VerifyNoOtherCalls();
         }
     }
 }

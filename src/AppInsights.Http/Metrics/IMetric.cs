@@ -1,7 +1,7 @@
-﻿using System;
-
-namespace AppInsights.Http.Metrics
+﻿namespace AppInsights.Http.Metrics
 {
+    using System;
+
     public interface IMetric
     {
         DateTime Start { get; }

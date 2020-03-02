@@ -1,10 +1,10 @@
-﻿using AppInsights.Http.Metrics;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System;
-
-namespace AppInsights.Http.Internal.Metrics
+﻿namespace AppInsights.Http.Internal.Metrics
 {
+    using System;
+    using AppInsights.Http.Metrics;
+    using Newtonsoft.Json.Linq;
+    using Newtonsoft.Json;
+
     internal class Metric : IMetric
     {
         private readonly AppInsightsMetric _appInsightsMetric;
@@ -12,7 +12,7 @@ namespace AppInsights.Http.Internal.Metrics
         public Metric(AppInsightsMetric appInsightsMetric, string appInsightsMetricJson, MetricsDefinition metrics)
         {
             _appInsightsMetric = appInsightsMetric;
-            var aggregation = JsonConvert.DeserializeObject<JObject>(appInsightsMetricJson)["value"][metrics.ToString()];
+            var aggregation = JsonConvert.DeserializeObject<JObject>(appInsightsMetricJson) ["value"][metrics.ToString()];
             Aggregation = JsonConvert.DeserializeObject<MetricAggregation>(aggregation.ToString());
         }
 

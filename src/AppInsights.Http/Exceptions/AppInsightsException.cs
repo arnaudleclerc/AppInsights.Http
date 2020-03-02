@@ -1,7 +1,7 @@
-﻿using System;
-
-namespace AppInsights.Http.Exceptions
+﻿namespace AppInsights.Http.Exceptions
 {
+    using System;
+
     public sealed class AppInsightsException : Exception
     {
         internal AppInsightsException(string message, string code) : base(message)

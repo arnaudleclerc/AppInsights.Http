@@ -1,8 +1,8 @@
-﻿using AppInsights.Http.Metrics;
-using Newtonsoft.Json;
-
-namespace AppInsights.Http.Internal.Metrics
+﻿namespace AppInsights.Http.Internal.Metrics
 {
+    using AppInsights.Http.Metrics;
+    using Newtonsoft.Json;
+
     internal class MetricAggregation : IMetricAggregation
     {
         [JsonProperty("min")]
@@ -16,6 +16,7 @@ namespace AppInsights.Http.Internal.Metrics
 
         [JsonProperty("stddev")]
         public long? StdDev { get; set; }
+
         [JsonProperty("sum")]
         public long? Sum { get; set; }
     }

@@ -1,7 +1,7 @@
-﻿using AppInsights.Http.Metadata;
-
-namespace AppInsights.Http.Internal.Metadata
+﻿namespace AppInsights.Http.Internal.Metadata
 {
+    using AppInsights.Http.Metadata;
+
     internal class MetadataDimension : IMetadataDimension
     {
         public string Metric { get; }

@@ -1,8 +1,8 @@
-﻿using Newtonsoft.Json;
-using System;
-
-namespace AppInsights.Http.Internal.Metrics
+﻿namespace AppInsights.Http.Internal.Metrics
 {
+    using System;
+    using Newtonsoft.Json;
+
     internal class AppInsightsMetric
     {
         [JsonProperty("value")]

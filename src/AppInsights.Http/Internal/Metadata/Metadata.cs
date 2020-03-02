@@ -1,8 +1,8 @@
-﻿using AppInsights.Http.Metadata;
-using System.Collections.Generic;
-
-namespace AppInsights.Http.Internal.Metadata
+﻿namespace AppInsights.Http.Internal.Metadata
 {
+    using System.Collections.Generic;
+    using AppInsights.Http.Metadata;
+
     internal class Metadata : IMetadata
     {
         internal Metadata(IReadOnlyCollection<IMetadataMetric> metrics, IReadOnlyCollection<IMetadataDimension> dimensions)

@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
-
-namespace AppInsights.Http.Analytics.Internals
+﻿namespace AppInsights.Http.Internal.Analytics
 {
+    using System.Collections.Generic;
+    using AppInsights.Http.Analytics;
+
     internal class AnalyticQueryResultRow : IAnalyticQueryResultRow
     {
         public IReadOnlyDictionary<string, string> Columns { get; }

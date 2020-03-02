@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Text;
-using AppInsights.Http.Analytics;
-
-namespace AppInsights.Http.Internal.Analytics
+﻿namespace AppInsights.Http.Internal.Analytics
 {
+    using System.Collections.Generic;
+    using System.Text;
+    using AppInsights.Http.Analytics;
+
     internal class AnalyticsQueryBuilder : IAnalyticsQueryBuilder
     {
         private readonly List<string> _filters = new List<string>();
@@ -79,7 +79,7 @@ namespace AppInsights.Http.Internal.Analytics
 
         public IAnalyticsQueryBuilder WithTop(int top, string byField, AnalyticNullsOrderingOperator nullsOrderingOperator)
         {
-             _filters.Add($"| top {top} by {byField} {nullsOrderingOperator}");
+            _filters.Add($"| top {top} by {byField} {nullsOrderingOperator}");
             return this;
         }
 

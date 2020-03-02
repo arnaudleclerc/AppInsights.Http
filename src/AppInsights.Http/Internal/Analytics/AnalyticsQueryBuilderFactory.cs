@@ -1,7 +1,7 @@
-﻿using AppInsights.Http.Analytics;
-
-namespace AppInsights.Http.Internal.Analytics
+﻿namespace AppInsights.Http.Internal.Analytics
 {
+    using AppInsights.Http.Analytics;
+
     internal class AnalyticsQueryBuilderFactory : IAnalyticsQueryBuilderFactory
     {
         public IAnalyticsQueryBuilder CreateAnalyticsQueryBuilder(AnalyticsSchema schema)

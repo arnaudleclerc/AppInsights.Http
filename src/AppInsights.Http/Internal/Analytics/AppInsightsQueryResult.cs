@@ -1,7 +1,7 @@
-﻿using Newtonsoft.Json;
-
-namespace AppInsights.Http.Internal.Analytics
+﻿namespace AppInsights.Http.Internal.Analytics
 {
+    using Newtonsoft.Json;
+
     internal class AppInsightsQueryResult
     {
         [JsonProperty("tables")]

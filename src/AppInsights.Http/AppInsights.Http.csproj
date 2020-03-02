@@ -1,20 +1,18 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Authors>Arnaud Leclerc</Authors>
-    <Company />
+    <Company/>
     <PackageProjectUrl>https://github.com/arnaudleclerc/AppInsights.Http</PackageProjectUrl>
     <RepositoryUrl>https://github.com/arnaudleclerc/AppInsights.Http</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <Description>SDK allowing to retrieve data from the Application Insights API</Description>
   </PropertyGroup>
-
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.2.0" />
-    <PackageReference Include="Microsoft.Extensions.Http" Version="2.2.0" />
-    <PackageReference Include="Microsoft.Extensions.Options" Version="2.2.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.2.0"/>
+    <PackageReference Include="Microsoft.Extensions.Http" Version="2.2.0"/>
+    <PackageReference Include="Microsoft.Extensions.Options" Version="2.2.0"/>
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2"/>
+    <PackageReference Include="Microsoft.Identity.Client" Version="4.8.2"/>
   </ItemGroup>
-
 </Project>

@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-
-namespace AppInsights.Http.Metadata
+﻿namespace AppInsights.Http.Metadata
 {
+    using System.Collections.Generic;
+
     public interface IMetadataMetric
     {
         string Metric { get; }

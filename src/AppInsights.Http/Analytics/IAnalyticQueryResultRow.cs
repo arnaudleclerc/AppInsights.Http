@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-
-namespace AppInsights.Http.Analytics
+﻿namespace AppInsights.Http.Analytics
 {
+    using System.Collections.Generic;
+
     /// <summary>
     /// Row of the result of a request to application insights
     /// </summary>
